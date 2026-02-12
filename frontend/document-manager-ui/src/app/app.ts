@@ -94,7 +94,6 @@ export class App implements OnInit {
     this.descricao = '';
     this.arquivoSelecionado = null;
     
-    // Limpa o valor físico do input de arquivo no DOM
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
