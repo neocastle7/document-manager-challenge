@@ -15,7 +15,7 @@ export interface Documento {
   providedIn: 'root'
 })
 export class DocumentoService {
-  private apiUrl = 'http://localhost:8080/api/documentos';
+  private apiUrl = 'https://document-manager-api.onrender.com';
 
   constructor(private http: HttpClient) { }
 
