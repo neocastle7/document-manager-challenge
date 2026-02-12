@@ -29,7 +29,6 @@ public class DocumentoController {
             @RequestParam("arquivo") MultipartFile arquivo,
             @RequestParam("titulo") String titulo,
             @RequestParam("descricao") String descricao) {
-        // Atende o requisito 4.1: Upload de documentos
         return ResponseEntity.ok(service.salvar(arquivo, titulo, descricao));
     }
 
@@ -37,14 +36,12 @@ public class DocumentoController {
     public ResponseEntity<Documento> adicionarComentario(
             @PathVariable Long id,
             @RequestBody String texto) {
-        // Importante: O texto pode vir com aspas do JSON, vamos limpar se necessário
         String textoLimpo = texto.replace("\"", "");
         return ResponseEntity.ok(service.adicionarComentario(id, textoLimpo));
     }
 
     @GetMapping
     public List<Documento> listar() {
-        // Atende o requisito 4.2: Listagem de documentos
         return service.listarTodos();
     }
 
@@ -55,7 +52,6 @@ public class DocumentoController {
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists()) {
-                // Tenta descobrir o tipo do arquivo (PDF, PNG, etc)
                 String contentType = Files.probeContentType(filePath);
                 if (contentType == null) {
                     contentType = "application/octet-stream";
