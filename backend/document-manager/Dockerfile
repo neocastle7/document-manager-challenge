@@ -5,7 +5,10 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
+
 COPY --from=build /app/target/*.jar app.jar
+
+RUN mkdir -p /app/uploads
 
 EXPOSE 8080
 
