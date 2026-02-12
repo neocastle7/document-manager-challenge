@@ -15,7 +15,7 @@ export interface Documento {
   providedIn: 'root'
 })
 export class DocumentoService {
-  private apiUrl = 'https://document-manager-api.onrender.com';
+  private apiUrl = 'https://document-manager-challenge.onrender.com/api/documentos';
 
   constructor(private http: HttpClient) { }
 
