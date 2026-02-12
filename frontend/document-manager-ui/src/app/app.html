@@ -1,0 +1,95 @@
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="text-primary fw-bold">📁 Gestão de Documentos</h2>
+    <p class="text-muted">Prova Técnica - Estágio Full Stack</p>
+  </div>
+
+  <div class="card shadow-sm mb-5 border-0 bg-light">
+    <div class="card-body p-4">
+      <h5 class="card-title mb-3">📤 Novo Upload</h5>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label small fw-bold text-secondary">Título</label>
+          <input type="text" [(ngModel)]="titulo" class="form-control" placeholder="Título do documento">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small fw-bold text-secondary">Descrição</label>
+          <input type="text" [(ngModel)]="descricao" class="form-control" placeholder="Opcional">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small fw-bold text-secondary">Formatos: PDF, JPG, PNG</label>
+          <input #fileInput type="file" (change)="onFileSelected($event)" class="form-control" accept=".pdf,.jpg,.png">
+        </div>
+        <div class="col-md-3">
+          <button (click)="subir()" class="btn btn-primary w-100 shadow-sm" [disabled]="!arquivoSelecionado || !titulo">
+            Subir Documento
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-3">📄 Documentos Cadastrados</h4>
+
+  <div *ngIf="documentos.length === 0" class="alert alert-info shadow-sm border-0">
+    Nenhum documento encontrado. Suba o primeiro arquivo acima!
+  </div>
+
+  <div *ngFor="let doc of documentos" class="card mb-4 shadow-sm border-start border-primary border-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5 class="mb-1 text-dark fw-bold">{{doc.titulo}}</h5>
+          <small class="text-muted">
+            <i class="bi bi-calendar-event"></i> Postado em: {{doc.dataUpload | date:'dd/MM/yyyy HH:mm'}}
+          </small>
+          <p class="mt-2 text-secondary">{{doc.descricao || 'Sem descrição.'}}</p>
+        </div>
+
+        <div class="d-flex gap-2">
+          <a [href]="'http://localhost:8080/api/documentos/download/' + doc.nomeArquivo" target="_blank"
+            class="btn btn-sm btn-outline-primary shadow-sm">
+            👁️ Ver
+          </a>
+          <a [href]="'http://localhost:8080/api/documentos/download-forced/' + doc.nomeArquivo"
+            class="btn btn-sm btn-outline-secondary shadow-sm">
+            📥 Baixar
+          </a>
+          <button (click)="deletarDoc(doc.id)" class="btn btn-sm btn-outline-danger shadow-sm">
+            🗑️ Excluir
+          </button>
+        </div>
+      </div>
+
+      <hr class="text-muted opacity-25">
+
+      <div class="bg-white p-3 rounded border border-light">
+        <h6 class="text-secondary mb-3 small fw-bold text-uppercase tracking-wider">
+          Comentários ({{doc.comentarios?.length || 0}})
+        </h6>
+
+        <div *ngFor="let c of doc.comentarios" class="mb-2 p-2 border-bottom border-light-subtle position-relative">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="badge bg-primary-subtle text-primary rounded-pill">Usuário</span>
+            <div>
+              <span class="extra-small text-muted me-2" style="font-size: 0.75rem;">{{c.dataHora | date:'HH:mm'}}</span>
+              <button (click)="deletarComentario(c.id)" class="btn btn-link text-danger p-0 border-0"
+                style="text-decoration: none; font-size: 1.2rem;">&times;</button>
+            </div>
+          </div>
+          <p class="small mb-0 text-dark" style="line-height: 1.4;">{{c.texto}}</p>
+        </div>
+
+        <div class="input-group mt-3">
+          <input #inputComent type="text" class="form-control form-control-sm" placeholder="Escreva um comentário..."
+            (input)="0">
+          <button type="button" (click)="comentar(doc.id, inputComent.value); inputComent.value=''"
+            class="btn btn-sm btn-primary shadow-sm"
+            [disabled]="!inputComent.value || inputComent.value.trim().length === 0">
+            Enviar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+# Java / Maven
+target/
+*.class
+*.log
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Arquivos de Upload (Essencial para não sujar o Git)
+/uploads/*
+!/uploads/.gitkeep
+
+# Maven Wrapper
+.mvn/
+mvnw
+mvnw.cmd
