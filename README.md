@@ -1,4 +1,4 @@
-# 📁 Gestão de Documentos - Prova Técnica
+# 📁 Gestão de Documentos
 
 Este projeto é uma aplicação Full Stack desenvolvida para o processo seletivo de Estagiário Desenvolvedor. A solução permite o upload de arquivos, listagem reativa, visualização/download e um sistema de histórico de comentários, atendendo integralmente aos requisitos da prova técnica.
 
