@@ -1,0 +1,15 @@
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jdk-jammy
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
+RUN mkdir -p /app/uploads
+
+EXPOSE 8080
+
+ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8080}"]
