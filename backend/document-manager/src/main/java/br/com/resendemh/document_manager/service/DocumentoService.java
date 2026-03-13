@@ -1,5 +1,6 @@
 package br.com.resendemh.document_manager.service;
 
+import br.com.resendemh.document_manager.exception.FileStorageException;
 import br.com.resendemh.document_manager.model.Comentario;
 import br.com.resendemh.document_manager.model.Documento;
 import br.com.resendemh.document_manager.repository.ComentarioRepository;
@@ -15,10 +16,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class DocumentoService {
 
+    private static final Logger logger = LoggerFactory.getLogger(DocumentoService.class);
     private final Path root = Paths.get("uploads");
 
     @Autowired
@@ -34,7 +38,7 @@ public class DocumentoService {
                 Files.createDirectories(root);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Não foi possível criar a pasta de uploads.");
+            throw new FileStorageException("Não foi possível criar a pasta de uploads.");
         }
     }
 
@@ -54,7 +58,7 @@ public class DocumentoService {
 
             return repository.save(doc);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar arquivo: " + e.getMessage());
+            throw new FileStorageException("Erro ao salvar arquivo: " + e.getMessage());
         }
     }
 
@@ -80,7 +84,7 @@ public class DocumentoService {
             try {
                 Files.deleteIfExists(this.root.resolve(doc.getNomeArquivo()));
             } catch (IOException e) {
-                System.err.println("Erro ao apagar arquivo físico.");
+                logger.error("Erro ao apagar arquivo físico.");
             }
             repository.deleteById(id);
         });
